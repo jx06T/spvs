@@ -1,103 +1,156 @@
-import Image from "next/image";
+'use client';
+
+import { signIn } from 'next-auth/react';
+import { useState, useEffect, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { MynauiSendSolid, LineiconsPointerTop, FaceWhitOpenMouth } from './utils/Icons';
+
+interface Face {
+  x: number;
+  y: number;
+  vy: number;
+  id: number;
+  rotation: number;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [password, setPassword] = useState('');
+  const [overlayActive, setOverlayActive] = useState(0);
+  const [fallingFaces, setFallingFaces] = useState<Face[]>([]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const auto = searchParams.get('auto');
+  const animationFrameId = useRef<number | null>(null);
+  const lasttime = useRef<number>(Date.now());
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  useEffect(() => {
+    if (auto === '1') {
+      handleOverlayClick();
+    }
+  }, [auto]);
+
+  const addFallingFace = () => {
+    const randomX = Math.floor(Math.random() * 80) + 10;
+
+    const newFace = {
+      id: Date.now(),
+      x: randomX,
+      y: -10,
+      vy: 0.1,
+      rotation: Math.random() * 360,
+    };
+
+    setFallingFaces(prev => [...prev, newFace]);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const result = await signIn('credentials', {
+      password,
+      redirect: false,
+      callbackUrl: '/hidden',
+    });
+
+    if (result?.ok) {
+      router.push('/hidden');
+    } else {
+      setPassword("");
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => addFallingFace(), i * 100);
+      }
+    }
+  };
+
+  const handleOverlayClick = () => {
+    setOverlayActive(1);
+    setTimeout(() => {
+      setOverlayActive(2);
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (fallingFaces.length === 0) return;
+
+    const updateFaces = () => {
+      setFallingFaces(prev =>
+        prev
+          .map(face => ({
+            ...face,
+            y: face.y + face.vy,
+            vy: face.vy + 0.01 * (Date.now() - lasttime.current),
+            rotation: face.rotation + 5,
+          }))
+          .filter(face => face.y < 700)
+      );
+      animationFrameId.current = requestAnimationFrame(updateFaces);
+      lasttime.current = Date.now()
+    };
+
+    animationFrameId.current = requestAnimationFrame(updateFaces);
+
+    return () => {
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+    };
+  }, [fallingFaces.length]);
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      <div className="px-[2%] sm:px-[18%] w-full h-full flex flex-col justify-center">
+        <main className="w-full text-center pb-20">
+          <h1 className="text-2xl">2025 建北電資聯合春遊 RPG 隱藏結局？</h1>
+          <h2 className="text-lg text-gray-400 mt-2">猜猜看這要做啥</h2>
+
+          <form
+            className="mt-4 flex justify-center text-gray-950"
+            style={{
+              opacity: overlayActive == 0 ? 0.3 : 1,
+              transform: overlayActive !== 2 ? "scale(0.5)" : "scale(1)",
+              animation: overlayActive == 0 ? 'none' : 'showInput 1s forwards'
+            }}
+            onSubmit={handleSubmit}>
+            <input
+              type="text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="輸入你找到的東西"
+              className="bg-gray-100 outline-none py-3 text-lg px-4 my-4 rounded-l-md shrink w-full"
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <button
+              className="cursor-pointer bg-gray-100 py-3 my-4 min-w-14 shrink-0 rounded-r-md border-l border-white active:bg-gray-300 origin-left active:scale-95 transition-all duration-100"
+              type="submit"
+            >
+              <MynauiSendSolid className="text-3xl inline-block pt-0.5 h-8 hover:text-2xl" />
+            </button>
+          </form>
+        </main>
+      </div>
+      {fallingFaces.map(face => (
+        <div
+          key={face.id}
+          className="absolute text-6xl z-20"
+          style={{
+            left: `${face.x}%`,
+            top: `${face.y}%`,
+            transform: `rotate(${face.rotation}deg)`,
+          }}
+        >
+          <FaceWhitOpenMouth className='' />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+      ))}
+
+      {overlayActive < 2 &&
+        <div
+          className="absolute inset-0 flex items-center justify-center cursor-pointer z-10 transition-opacity duration-500"
+          onClick={handleOverlayClick}
+          style={{
+            background: 'radial-gradient(circle at center, transparent 0%, transparent 0%, rgba(0, 0, 0, 1) 20%, black 80%)',
+            animation: overlayActive == 0 ? 'none' : 'shrinkOverlay 1s forwards'
+          }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <div style={{ animation: overlayActive == 0 ? "breathe 3s infinite" : "hidePointer .2s forwards" }}><LineiconsPointerTop className=' text-3xl ' /></div>
+        </div>
+      }
     </div>
   );
 }

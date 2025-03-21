@@ -1,0 +1,45 @@
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from '@/app/auth';
+import { Session } from 'next-auth';
+import { FaceWhitOpenMouth } from '../utils/Icons';
+
+interface HiddenPageProps {
+    session: Session | null;
+}
+
+const HiddenPage: React.FC<HiddenPageProps> = async () => {
+    const session = await getServerSession(authOptions);
+    const text = `可能會有一些東西在這裡
+或是沒有
+我也不知道
+不要問我
+再多加一些字好了
+字字字字字字字字字字字字字字字字字字字字字字字字字字
+`
+    if (!session) {
+        return (
+            <div className=' w-full px-2'>
+                <h1 className="text-xl text-gray-400 mt-2">你還不該來到這的...</h1>
+                <h1 className="text-xl text-gray-400 mt-2">當然...</h1>
+                <h1 className="text-xl text-gray-400 mt-2">你啥都看不到？！</h1>
+                <a className='text-lg bg-gray-400 px-4 py-3 rounded-xl block w-30 mt-6' href="/?auto=1">回去吧<FaceWhitOpenMouth className=' inline-block ml-3 text-xl -mt-0.5'/></a>
+            </div>
+        );
+    }
+
+    return (
+        <div className="relative w-full h-full">
+            <div className="px-[2%] sm:px-[18%] w-full h-full flex flex-col justify-center">
+                <main className="w-full text-center pb-20">
+                    <h1 className="text-2xl">2025 建北電資聯合春遊 RPG 隱藏結局？</h1>
+                    <h2 className="text-lg text-gray-400 mt-2">嗯嗯這就是隱藏結局</h2>
+                    <pre className=' mt-8 p-4 rounded-xl border border-gray-600 whitespace-pre-wrap'>
+                        {text}
+                    </pre>
+                </main>
+            </div>
+        </div>
+    );
+};
+
+export default HiddenPage;

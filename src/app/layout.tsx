@@ -24,8 +24,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=LXGW+WenKai+TC&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet" />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` p-4 md:p-6 lg:p-8 h-[100svh] w-full overflow-hidden ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
