@@ -30,11 +30,9 @@ function HomeContent() {
   }, [auto]);
 
   const addFallingFace = () => {
-    const randomX = Math.floor(Math.random() * 80) + 10;
-
     const newFace = {
       id: Date.now(),
-      x: randomX,
+      x: Math.random() * 80 + 10,
       y: -10,
       vy: 0.1,
       rotation: Math.random() * 360,
@@ -77,7 +75,7 @@ function HomeContent() {
           .map(face => ({
             ...face,
             y: face.y + face.vy,
-            vy: face.vy + 0.005 * (Date.now() - lasttime.current),
+            vy: face.vy + 0.01 * (Date.now() - lasttime.current),
             rotation: face.rotation + 1,
           }))
           .filter(face => face.y < 700)
@@ -128,11 +126,9 @@ function HomeContent() {
       {fallingFaces.map(face => (
         <div
           key={face.id}
-          className="absolute text-6xl z-20 rounded-full bg-black/50"
+          className="absolute -top-20 left-0 text-6xl z-20 rounded-full bg-black/50"
           style={{
-            left: `${face.x}%`,
-            top: `${face.y}%`,
-            transform: `rotate(${face.rotation}deg)`,
+            transform: `translate(${face.x}vw, ${face.y}px) rotate(${face.rotation}deg)`,
           }}
         >
           <FaceWhitOpenMouth className=' opacity-100' />
@@ -157,7 +153,12 @@ function HomeContent() {
 
 export default function Home() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={
+      <div className="relative w-full h-full overflow-hidden">
+        <div className="px-[2%] sm:px-[18%] w-full h-full flex flex-col justify-center">
+          <div className=' text-3xl'>Loading...</div>
+        </div>
+      </div>}>
       <HomeContent />
     </Suspense>
   );
