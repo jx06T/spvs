@@ -1,9 +1,28 @@
-import NextAuth, { AuthOptions, User as NextAuthUser } from 'next-auth';
+import { AuthOptions, User as NextAuthUser, Session } from 'next-auth';
+import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 
 interface Credentials {
   password: string;
+}
+
+interface CustomJWT extends JWT {
+  id: string;
+  name: string;
+  timestamp: number;
+  status: string;
+}
+
+interface CustomSession extends Session {
+  user: {
+    id: string;
+    name?: string;
+    email?: string;
+    image?: string;
+    timestamp: number;
+    status: string;
+  };
 }
 
 export const authOptions: AuthOptions = {
@@ -36,24 +55,30 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: { token: any; user?: NextAuthUser }) {
+    async jwt({ token, user }: { token: JWT; user?: NextAuthUser }): Promise<CustomJWT> {
+      const customToken = token as CustomJWT;
+
       if (user) {
-        token.id = user.id;
-        token.name = user.name;
-        token.timestamp = Date.now();
-        token.status = "correct";
+        customToken.id = user.id;
+        customToken.name = user.name || '';
+        customToken.timestamp = Date.now();
+        customToken.status = "correct";
       }
-      return token;
+
+      return customToken;
     },
 
-    async session({ session, token }: { session: any; token: any }): Promise<any> {
-      if (session.user) {
-        session.user.id = token.id;
-        session.user.timestamp = token.timestamp;
-        session.user.status = token.status;
-      }
-      return session;
-    }
+    async session({ session, token }: { session: Session; token: JWT }): Promise<CustomSession> {
+      const customSession = session as CustomSession;
+      const customToken = token as CustomJWT;
 
+      if (customSession.user) {
+        customSession.user.id = customToken.id;
+        customSession.user.timestamp = customToken.timestamp;
+        customSession.user.status = customToken.status;
+      }
+
+      return customSession;
+    }
   },
 };
