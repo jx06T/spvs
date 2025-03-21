@@ -1,7 +1,7 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { MynauiSendSolid, LineiconsPointerTop, FaceWhitOpenMouth } from './utils/Icons';
 
@@ -13,7 +13,7 @@ interface Face {
   rotation: number;
 }
 
-export default function Home() {
+function HomeContent() {
   const [password, setPassword] = useState('');
   const [overlayActive, setOverlayActive] = useState(0);
   const [fallingFaces, setFallingFaces] = useState<Face[]>([]);
@@ -77,8 +77,8 @@ export default function Home() {
           .map(face => ({
             ...face,
             y: face.y + face.vy,
-            vy: face.vy + 0.01 * (Date.now() - lasttime.current),
-            rotation: face.rotation + 5,
+            vy: face.vy + 0.005 * (Date.now() - lasttime.current),
+            rotation: face.rotation + 1,
           }))
           .filter(face => face.y < 700)
       );
@@ -128,14 +128,14 @@ export default function Home() {
       {fallingFaces.map(face => (
         <div
           key={face.id}
-          className="absolute text-6xl z-20"
+          className="absolute text-6xl z-20 rounded-full bg-black/50"
           style={{
             left: `${face.x}%`,
             top: `${face.y}%`,
             transform: `rotate(${face.rotation}deg)`,
           }}
         >
-          <FaceWhitOpenMouth className='' />
+          <FaceWhitOpenMouth className=' opacity-100' />
         </div>
       ))}
 
@@ -152,5 +152,13 @@ export default function Home() {
         </div>
       }
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
