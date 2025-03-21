@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/auth';
+import { authOptions } from '@/app/utils/auth';
 import { Session } from 'next-auth';
 import { FaceWhitOpenMouth } from '../utils/Icons';
 import Link from 'next/link';
