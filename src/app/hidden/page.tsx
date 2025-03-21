@@ -4,6 +4,16 @@ import { Session } from 'next-auth';
 import { FaceWhitOpenMouth } from '../utils/Icons';
 import Link from 'next/link';
 
+interface CustomSession extends Session {
+    user: {
+        id: string;
+        name?: string;
+        email?: string;
+        image?: string;
+        timestamp: number;
+        status: string;
+    };
+}
 
 interface HiddenPageProps {
     session: Session | null;
@@ -29,8 +39,7 @@ const HiddenPage: React.FC<HiddenPageProps> = async () => {
         );
     }
 
-    // @ts-expect-error
-    const crackTime = new Date(session.user ? session.user.timestamp : "").toLocaleString('zh-TW', {
+    const crackTime = new Date(session.user ? (session as CustomSession).user.timestamp : "").toLocaleString('zh-TW', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit',
