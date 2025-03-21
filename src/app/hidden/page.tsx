@@ -29,7 +29,7 @@ const HiddenPage: React.FC<HiddenPageProps> = async () => {
         );
     }
 
-    // @ts-ignore
+    // @ts-expect-error
     const crackTime = new Date(session.user ? session.user.timestamp : "").toLocaleString('zh-TW', {
         year: 'numeric',
         month: '2-digit',
