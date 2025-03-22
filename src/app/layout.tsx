@@ -31,9 +31,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=LXGW+WenKai+TC&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`h-[100svh] w-full overflow-hidden ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`h-[100svh] w-full ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className=" rounded-xl text-bg h-full w-full overflow-hidden">
+        <div className=" rounded-xl text-bg h-full w-full overflow-x-hidden overflow-y-auto">
           <div className=" origin-center w-[200%] h-[60%] absolute bg-black/50 top-[12%] left-[-50%] " style={{ transform: "rotate(-8deg)" }}></div>
           <ClientLayout>
             {children}

@@ -15,7 +15,7 @@ const Home = async () => {
           破解頁面
         </Link>
       }
-      <div className="px-[2%] sm:px-[18%] w-full h-full flex flex-col justify-center">
+      <div className="px-[2%] sm:px-[18%] w-full h-full mt-[48%] sm:mt-[12%] md:mt-[10%]">
         <main className="w-full text-center pb-20">
           <HomePage></HomePage>
         </main >

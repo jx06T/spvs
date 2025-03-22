@@ -55,7 +55,7 @@ const HiddenPage = async () => {
 
     return (
         <div className="relative w-full h-full">
-            <div className="px-[2%] sm:px-[18%] w-full h-full flex flex-col justify-center">
+            <div className="px-[2%] sm:px-[18%] mt-[36%] sm:mt-[8%] md:mt-[10%] w-full h-full">
                 <main className="w-full text-center pb-20">
                     <h1 className="text-2xl">2025 建北電資聯合春遊 RPG 隱藏結局？</h1>
                     <h2 className="text-lg text-gray-400 mt-2">嗯嗯這就是隱藏結局</h2>
