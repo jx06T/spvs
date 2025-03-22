@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useAnimation } from "../context/AnimationContext";
 import { FaceWhitOpenMouth, FaceWithSquintingEyes } from "../utils/Icons";
 interface Face {
