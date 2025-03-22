@@ -16,7 +16,6 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
     const animationTimeoutId = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const triggerFallingFaces = (smile: boolean = false) => {
-        console.log(smile)
         setIsSmile(smile)
         setIsAnimating(isAnimating + 1);
         if (animationTimeoutId && animationTimeoutId.current) {

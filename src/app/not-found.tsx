@@ -3,7 +3,7 @@ import { FaceWhitOpenMouth } from '@/app/utils/Icons';
 
 const NotFoundPage = () => {
     return (
-        <div className="relative w-full md:px-6 pt-4">
+        <div className="relative w-full  px-4 md:px-6 pt-4">
             <h1 className="text-xl text-gray-400 mt-2">： 4 0 4 . . .</h1>
             <h1 className="text-xl text-gray-400 mt-2">：你迷路了哈哈</h1>
             <h1 className="text-xl text-gray-400 mt-2">：下面是回去的路</h1>

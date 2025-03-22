@@ -43,7 +43,7 @@ const HomeContent = () => {
       }, 1500);
     } else {
       triggerFallingFaces(false);
-      console.log(result)
+      // console.log(result)
     }
   };
 
