@@ -26,24 +26,32 @@ const HomeContent = () => {
   }, [auto]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (verifying) {
+      return
+    }
+
     setVerifying(true)
     setPassword("");
-    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
     const result = await signIn('credentials', {
       password,
       redirect: false,
       callbackUrl: '/hidden',
     });
 
-    setVerifying(false)
     if (result?.ok) {
       triggerFallingFaces(true);
+      setVerifying(false)
       setTimeout(() => {
         router.push('/hidden');
       }, 1500);
     } else {
       triggerFallingFaces(false);
-      // console.log(result)
+      setTimeout(() => {
+        setVerifying(false)
+      }, 500);
     }
   };
 
@@ -72,6 +80,7 @@ const HomeContent = () => {
           type="text"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          onBlur={() => { window.scrollTo({ top: 0, behavior: "smooth" }) }}
           required
           placeholder="輸入你找到的東西"
           className="h-14 bg-gray-100 outline-none py-3 text-lg px-4 my-4 rounded-l-md shrink w-full"

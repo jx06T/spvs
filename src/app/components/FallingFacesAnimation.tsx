@@ -24,7 +24,7 @@ export default function FallingFacesAnimation() {
         const newFaces: Face[] = Array.from({ length: 10 }, (_, i) => ({
             id: Math.random() * 10000,
             x: i * 9 + 10,
-            delay: Math.random() * 1,
+            delay: Math.random() * 1 + 0.1,
             duration: 1 + Math.random() * 2,
             rotation: Math.random() * 360,
         }));
@@ -35,7 +35,7 @@ export default function FallingFacesAnimation() {
     if (!isAnimating) return null;
 
     return (
-        <>
+        <div className=" absolute w-full h-full overflow-hidden">
             {faces.map((face) => (
                 <div
                     key={face.id}
@@ -60,6 +60,6 @@ export default function FallingFacesAnimation() {
                 >
                 </div>
             )}
-        </>
+        </div>
     );
 }
