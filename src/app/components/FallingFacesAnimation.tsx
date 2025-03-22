@@ -3,99 +3,55 @@
 import { useState, useEffect, useRef } from "react";
 import { useAnimation } from "../context/AnimationContext";
 import { FaceWhitOpenMouth, FaceWithSquintingEyes } from "../utils/Icons";
-
 interface Face {
-    x: number;
-    y: number;
-    vy: number;
     id: number;
-    f: number;
+    x: number;
+    delay: number;
+    duration: number;
     rotation: number;
 }
 
 export default function FallingFacesAnimation() {
     const { isAnimating, isSmile } = useAnimation();
-    const animationFrameId = useRef<number | null>(null);
-    const lastTime = useRef(Date.now());
-    const [fallingFaces, setFallingFaces] = useState<Face[]>([]);
-
-    const addFallingFace = () => {
-        const newFallingFaces = Array.from({ length: 10 }, (_, i: number) => {
-            return {
-                id: Math.random() * 10000,
-                x: i * 9 + 10,
-                y: -20,
-                f: Math.random() * -50,
-                vy: 0.1,
-                rotation: Math.random() * 360,
-            }
-        });
-
-        setFallingFaces(prev => [...prev, ...newFallingFaces]);
-    };
+    const [faces, setFaces] = useState<Face[]>([]);
 
     useEffect(() => {
-        if (isAnimating == 0) {
-            setFallingFaces([]);
+        if (isAnimating === 0) {
+            setFaces([]);
             return;
         }
 
-        addFallingFace();
+        const newFaces: Face[] = Array.from({ length: 10 }, (_, i) => ({
+            id: Math.random() * 10000,
+            x: i * 9 + 10,
+            delay: Math.random() * 1,
+            duration: 1 + Math.random() * 2,
+            rotation: Math.random() * 360,
+        }));
+
+        setFaces(newFaces);
     }, [isAnimating]);
-
-    useEffect(() => {
-        if (!isAnimating || fallingFaces.length === 0) return;
-
-        const updateFaces = () => {
-            setFallingFaces(prev =>
-                prev
-                    .map(face => (
-                        face.f > 0 ?
-                            {
-                                ...face,
-                                y: face.y + face.vy,
-                                vy: face.vy + 0.01 * (Date.now() - lastTime.current),
-                                rotation: face.rotation + 1,
-                            } : {
-                                ...face,
-                                f: face.f + 1
-                            }))
-                    .filter(face => face.y < 100)
-            );
-
-            lastTime.current = Date.now();
-            animationFrameId.current = requestAnimationFrame(updateFaces);
-        };
-
-        animationFrameId.current = requestAnimationFrame(updateFaces);
-
-        return () => {
-            if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
-        };
-    }, [isAnimating, fallingFaces.length]);
 
     if (!isAnimating) return null;
 
     return (
         <>
-            {fallingFaces.map(face => (
+            {faces.map((face) => (
                 <div
                     key={face.id}
-                    className="absolute text-8xl z-30 bg-black/30 rounded-full"
+                    className="falling-face text-8xl"
                     style={{
                         left: `${face.x}%`,
-                        top: `${face.y}%`,
-                        transform: `rotate(${face.rotation}deg)`,
+                        top: `-100px`,
+                        animationDuration: `${face.duration}s`,
+                        animationDelay: `${face.delay}s`,
                     }}
                 >
-                    {
-                        isSmile ?
-                            <FaceWithSquintingEyes /> :
-                            <FaceWhitOpenMouth />
-                    }
+                    {isSmile ? <FaceWithSquintingEyes /> : <FaceWhitOpenMouth />}
                 </div>
             ))}
-            {isSmile &&
+
+            {isSmile && (
                 <div
                     className="absolute inset-0 flex items-center justify-center cursor-pointer z-10 transition-opacity duration-500"
                     style={{
@@ -103,7 +59,7 @@ export default function FallingFacesAnimation() {
                     }}
                 >
                 </div>
-            }
+            )}
         </>
     );
 }
