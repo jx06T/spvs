@@ -55,7 +55,7 @@ export default function FallingFacesAnimation() {
                 <div
                     className="absolute inset-0 flex items-center justify-center cursor-pointer z-10 transition-opacity duration-500"
                     style={{
-                        animation: 'shrinkOverlay2 2s forwards 0.5s'
+                        animation: 'shrinkOverlay2 3s forwards 0.5s'
                     }}
                 >
                 </div>
