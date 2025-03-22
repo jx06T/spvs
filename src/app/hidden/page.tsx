@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/utils/auth';  // Correct path to authOptions
+import { authOptions } from '@/app/utils/auth';
 import { Session } from 'next-auth';
 import { FaceWhitOpenMouth } from '../utils/Icons';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ interface CustomSession extends Session {
 }
 
 const HiddenPage = async () => {
-    const session = await getServerSession(authOptions);
+    const sessionData = await getServerSession(authOptions);
 
     const text = `可能會有一些東西在這裡
 或是沒有
@@ -26,13 +26,13 @@ const HiddenPage = async () => {
 字字字字字字字字字字字字字字字字字字字字字字字字字字
 `;
 
-    if (!session) {
+    if (!sessionData) {
         return (
             <div className="w-full px-2">
                 <h1 className="text-xl text-gray-400 mt-2">你還不該來到這的...</h1>
                 <h1 className="text-xl text-gray-400 mt-2">當然...</h1>
                 <h1 className="text-xl text-gray-400 mt-2">你啥都看不到？！</h1>
-                <Link className="text-lg bg-gray-400 px-4 py-3 rounded-xl block w-30 mt-6" href="/?auto=1">
+                <Link className="text-lg bg-gray-600 px-4 py-1 rounded-xl block w-30 mt-6" href="/?auto=1">
                     回去吧
                     <FaceWhitOpenMouth className="inline-block ml-3 text-xl -mt-0.5" />
                 </Link>
@@ -40,7 +40,7 @@ const HiddenPage = async () => {
         );
     }
 
-    const crackTime = new Date(session.user ? (session as CustomSession).user.timestamp : "").toLocaleString(
+    const crackTime = new Date(sessionData.user ? (sessionData as CustomSession).user.timestamp : "").toLocaleString(
         "zh-TW",
         {
             year: "numeric",

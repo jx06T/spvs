@@ -52,6 +52,36 @@ body {
   }
 }
 
+@keyframes shrinkOverlay2 {
+  0% {
+    transform: scale(100);
+    opacity: 1;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+    background-color: #000000;
+  }
+  60% {
+    background-color: #000000;
+    transform: scale(1);
+    opacity: 1;
+  }
+  61% {
+    background: radial-gradient(
+      circle at center,
+      transparent 0%,
+      transparent 0%,
+      rgba(0, 0, 0, 1) 1%,
+      black 99%
+    );
+  }
+  100% {
+    transform: scale(100);
+    opacity: 1;
+  }
+}
+
 @keyframes showInput {
   0% {
     opacity: 0.3;
@@ -69,5 +99,61 @@ body {
   }
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes loader1 {
+  0% {
+    scale: 0;
+  }
+  50% {
+    scale: 1;
+  }
+  100% {
+    scale: 0;
+  }
+}
+@keyframes loader2 {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 0;
+  }
+  100% {
+    scale: 1;
+  }
+}
+
+.text-bg {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.text-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("/bg.png");
+  background-size: cover;
+  background-position: center;
+  animation: blurCycle 4s infinite ease-in-out;
+  z-index: -1;
+}
+
+@keyframes blurCycle {
+  0% {
+    filter: blur(4px) brightness(0.7);
+  }
+  50% {
+    filter: blur(8px) brightness(0.7);
+  }
+  100% {
+    filter: blur(4px) brightness(0.7);
   }
 }

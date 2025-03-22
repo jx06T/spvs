@@ -1,10 +1,15 @@
-import { AuthOptions, User as NextAuthUser, Session } from 'next-auth';
+import { getServerSession } from 'next-auth/next';
+
+import { AuthOptions, User, Session } from 'next-auth';
 import { JWT } from 'next-auth/jwt';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 
 interface Credentials {
   password: string;
+}
+interface NextAuthUser extends User {
+  timestamp?: number | null;
 }
 
 interface CustomJWT extends JWT {
@@ -37,6 +42,7 @@ export const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: Credentials | undefined): Promise<NextAuthUser | null> {
+        const sessionData = await getServerSession(authOptions);
         const hashedPassword: string = process.env.HASHED_PASSWORD || "";
 
         if (!credentials?.password) {
@@ -46,7 +52,7 @@ export const authOptions: AuthOptions = {
 
         if (await bcrypt.compare(credentials.password, hashedPassword)) {
           console.log(`key verified attempt at ${new Date().toISOString()}`);
-          return { id: '1', name: 'User' };
+          return { id: '1', name: 'User', timestamp: sessionData ? (sessionData as CustomSession).user.timestamp : null };
         } else {
           console.log(`Invalid key verification attempt at ${new Date().toISOString()} ${hashedPassword}`);
           throw new Error("invalid_key");
@@ -61,7 +67,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         customToken.id = user.id;
         customToken.name = user.name || '';
-        customToken.timestamp = Date.now();
+        customToken.timestamp = user.timestamp || Date.now();
         customToken.status = "correct";
       }
 

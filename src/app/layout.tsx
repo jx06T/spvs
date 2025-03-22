@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import ClientLayout from "@/app/components/ClientLayout";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,13 +27,18 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+Mono+TC&family=LXGW+WenKai+TC&family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={` p-4 md:p-6 lg:p-8 h-[100svh] w-full overflow-hidden ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`h-[100svh] w-full overflow-hidden ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className=" rounded-xl text-bg h-full w-full overflow-hidden">
+          <div className=" origin-center w-[200%] h-[60%] absolute bg-black/50 top-[12%] left-[-50%] " style={{ transform: "rotate(-8deg)" }}></div>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </div>
       </body>
     </html>
   );
