@@ -28,7 +28,7 @@ const HiddenPage = async () => {
 
     if (!sessionData) {
         return (
-            <div className="w-full px-2">
+            <div className="relative w-full px-2">
                 <h1 className="text-xl text-gray-400 mt-2">你還不該來到這的...</h1>
                 <h1 className="text-xl text-gray-400 mt-2">當然...</h1>
                 <h1 className="text-xl text-gray-400 mt-2">你啥都看不到？！</h1>
