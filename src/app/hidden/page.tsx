@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from '@/app/utils/auth';
 import { Session } from 'next-auth';
-import { FaceWhitOpenMouth } from '../utils/Icons';
+import { FaceWhitOpenMouth } from '@/app/utils/Icons';
 import Link from 'next/link';
 
 interface CustomSession extends Session {
@@ -28,12 +28,12 @@ const HiddenPage = async () => {
 
     if (!sessionData) {
         return (
-            <div className="relative w-full px-2">
-                <h1 className="text-xl text-gray-400 mt-2">你還不該來到這的...</h1>
-                <h1 className="text-xl text-gray-400 mt-2">當然...</h1>
-                <h1 className="text-xl text-gray-400 mt-2">你啥都看不到？！</h1>
-                <Link className="text-lg bg-gray-600 px-4 py-1 rounded-xl block w-30 mt-6" href="/?auto=1">
-                    回去吧
+            <div className="relative w-full px-4 md:px-6 pt-4">
+                <h1 className="text-xl text-gray-400 mt-2">：你還不該來到這的...</h1>
+                <h1 className="text-xl text-gray-400 mt-2">：當然你啥都看不到！</h1>
+                <h1 className="text-xl text-gray-400 mt-2">：回去找東西吧</h1>
+                <Link className="text-lg bg-gray-600 px-4 py-1 rounded-xl block w-30 mt-4 ml-5" href="/?auto=1">
+                    回首頁
                     <FaceWhitOpenMouth className="inline-block ml-3 text-xl -mt-0.5" />
                 </Link>
             </div>
