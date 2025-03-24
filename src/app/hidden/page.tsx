@@ -43,6 +43,7 @@ const HiddenPage = async () => {
     const crackTime = new Date(sessionData.user ? (sessionData as CustomSession).user.timestamp : "").toLocaleString(
         "zh-TW",
         {
+            timeZone: "Asia/Taipei", 
             year: "numeric",
             month: "2-digit",
             day: "2-digit",
