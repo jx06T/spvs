@@ -28,8 +28,8 @@ export default function FallingFacesAnimation() {
             duration: 1 + Math.random() * 2,
             rotation: Math.random() * 360,
         }));
-
-        setFaces(newFaces);
+		setFaces((prevFaces) => [...prevFaces, ...newFaces].slice(-20)); 
+        //setFaces(newFaces);
     }, [isAnimating]);
 
     if (!isAnimating) return null;
