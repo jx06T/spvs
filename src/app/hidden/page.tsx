@@ -18,12 +18,10 @@ interface CustomSession extends Session {
 const HiddenPage = async () => {
     const sessionData = await getServerSession(authOptions);
 
-    const text = `可能會有一些東西在這裡
-或是沒有
-我也不知道
-不要問我
-再多加一些字好了
-字字字字字字字字字字字字字字字字字字字字字字字字字字
+    const text = `神回到了塔可拉島。祂感念你們救贖了這座島嶼，贈與你們一人一個十米高的黃金雕像。鬍嗑船長瞠目結舌，但因為感謝你們解放了這座島讓他能夠離開，他毅然決然決定載你們回去。到了旅人故鄉的島嶼(絕對沒有海關這種東西)你們用一點黃金換了一間大房子，房子的周圍擺著你們的雕像。
+於是你們過著幸福快樂的生活，躺著就可以過完餘生。
+多年以後，突然空氣中飄出一個聲音，是一個甜美的女聲，隨後是一個似曾相似的船夫的聲音。
+「塔可拉島已然至善至美，多虧了你們，因此神決定讓你們無限次來這裡度假，當然，這座島很隱密，所以只有你們能來，至於通關密語––」
 `;
 
     if (!sessionData) {
@@ -58,10 +56,13 @@ const HiddenPage = async () => {
         <div className="relative w-full h-full">
             <div className="px-[2%] sm:px-[18%] mt-[36%] sm:mt-[8%] md:mt-[10%] w-full h-full">
                 <main className="w-full text-center pb-20">
-                    <h1 className="text-2xl">2025 建北電資聯合春遊 RPG 隱藏結局？</h1>
-                    <h2 className="text-lg text-gray-400 mt-2">嗯嗯這就是隱藏結局</h2>
+                    <h1 className="text-2xl">2025 建北電資聯合春遊 RPG 隱藏結局!</h1>
+                    <h2 className="text-lg text-gray-400 mt-2">春眠不覺曉，電資樂逍遙</h2>
                     <h3 className="text-md text-gray-500 mt-2">破解時間：{crackTime}</h3>
-                    <pre className="mt-8 p-4 rounded-xl border border-gray-600 whitespace-pre-wrap">{text}</pre>
+                    <pre className="mt-8 p-4 rounded-xl border border-gray-600 whitespace-pre-wrap">{text}
+<br></br>
+ <h2 className="text-lg text-gray-400 mt-2">春眠不覺曉，電資樂逍遙</h2>
+						</pre>
                     <div className=' w-full  text-right mt-3 pr-1'>
                         <Link className="text-gray-500 text-base underline" href="/?auto=1">首頁</Link>
                     </div>
