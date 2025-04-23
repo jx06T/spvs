@@ -66,7 +66,7 @@ const HomeContent = () => {
   return (
     <>
       <h1 className="text-2xl">2025 建北電資聯合春遊 RPG 隱藏結局？</h1>
-      <h2 className="text-lg text-gray-400 mt-2">猜猜看這要做啥</h2>
+      <h2 className="text-lg text-gray-400 mt-2">你知道 Flag 嗎（？</h2>
 
       <form
         className="mt-4 flex justify-center text-gray-950"
