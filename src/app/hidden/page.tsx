@@ -61,7 +61,7 @@ const HiddenPage = async () => {
                     <h3 className="text-md text-gray-500 mt-2">破解時間：{crackTime}</h3>
                     <pre className="mt-8 p-4 rounded-xl border border-gray-600 whitespace-pre-wrap">{text}
 <br></br>
- <h2 className="text-lg text-gray-400 mt-2">春眠不覺曉，電資樂逍遙</h2>
+ <h2 className="text-lg text-gray-400 mt-1">春眠不覺曉，電資樂逍遙</h2>
 						</pre>
                     <div className=' w-full  text-right mt-3 pr-1'>
                         <Link className="text-gray-500 text-base underline" href="/?auto=1">首頁</Link>
